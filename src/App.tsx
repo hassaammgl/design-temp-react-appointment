@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { MeetingProvider } from "./contexts/MeetingContext";
 import { LoginPage } from "./pages/LoginPage";
+import { SignupPage } from "./pages/SignupPage";
 import { CTODashboard } from "./pages/CTODashboard";
 import { CEODashboard } from "./pages/CEODashboard";
 import { CFODashboard } from "./pages/CFODashboard";
@@ -29,6 +30,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
                   <Route path="/cto-dashboard" element={<CTODashboard />} />
                   <Route path="/ceo-dashboard" element={<CEODashboard />} />
                   <Route path="/cfo-dashboard" element={<CFODashboard />} />

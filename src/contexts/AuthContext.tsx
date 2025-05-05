@@ -16,6 +16,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -113,6 +114,61 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Invalid credentials");
     }
   };
+  
+  const signup = async (name: string, email: string, password: string, role: UserRole) => {
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    // Check if user with this email already exists
+    const existingUser = mockUsers.find((u) => u.email === email);
+    
+    if (existingUser) {
+      toast.error("User with this email already exists");
+      throw new Error("Email already in use");
+    }
+    
+    // In a real app, you would make an API call to create the user
+    // For now, we'll just create a new mock user and add to our array
+    const newUser = {
+      id: (mockUsers.length + 1).toString(),
+      email,
+      password,
+      name,
+      role,
+      avatar: "/placeholder.svg",
+    };
+    
+    // Add to mock users (this won't persist on reload in this demo)
+    mockUsers.push(newUser);
+    
+    // Log in the new user
+    const { password: pwd, ...userWithoutPassword } = newUser;
+    setUser(userWithoutPassword);
+    localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+    
+    toast.success(`Account created successfully! Welcome, ${name}!`);
+    
+    // Redirect based on role
+    switch (role) {
+      case "cto":
+        navigate("/cto-dashboard");
+        break;
+      case "ceo":
+        navigate("/ceo-dashboard");
+        break;
+      case "cfo":
+        navigate("/cfo-dashboard");
+        break;
+      case "gm":
+        navigate("/gm-dashboard");
+        break;
+      case "receptionist":
+        navigate("/receptionist-dashboard");
+        break;
+      default:
+        navigate("/");
+    }
+  };
 
   const logout = () => {
     setUser(null);
@@ -126,6 +182,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         login,
+        signup,
         logout,
         isAuthenticated: !!user,
       }}

@@ -6,21 +6,25 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sun, Moon } from "lucide-react";
+import { UserRole } from "@/contexts/AuthContext";
 
-export const LoginPage = () => {
+export const SignupPage = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("receptionist");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated, user } = useAuth();
+  const { signup, isAuthenticated, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(email, password);
+      await signup(name, email, password, role);
     } catch (error) {
       console.error(error);
     } finally {
@@ -63,19 +67,30 @@ export const LoginPage = () => {
             <span className="text-green-primary">Green</span> Meetings
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Sign in to your account
+            Create a new account
           </p>
         </div>
         
         <Card>
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle>Sign Up</CardTitle>
             <CardDescription>
-              Enter your credentials to access your account
+              Enter your information to create an account
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -97,6 +112,21 @@ export const LoginPage = () => {
                   required
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="role">Role</Label>
+                <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cto">CTO</SelectItem>
+                    <SelectItem value="ceo">CEO</SelectItem>
+                    <SelectItem value="cfo">CFO</SelectItem>
+                    <SelectItem value="gm">General Manager</SelectItem>
+                    <SelectItem value="receptionist">Receptionist</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <Button 
@@ -104,30 +134,17 @@ export const LoginPage = () => {
                 className="w-full bg-green-primary hover:bg-green-dark" 
                 disabled={isLoading}
               >
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoading ? "Creating account..." : "Sign Up"}
               </Button>
               <p className="text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link to="/signup" className="text-green-primary hover:underline">
-                  Sign Up
+                Already have an account?{" "}
+                <Link to="/login" className="text-green-primary hover:underline">
+                  Sign In
                 </Link>
               </p>
             </CardFooter>
           </form>
         </Card>
-        
-        <div className="mt-4 text-center text-sm">
-          <p className="text-muted-foreground">
-            Demo accounts:
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            cto@example.com / password<br />
-            ceo@example.com / password<br />
-            cfo@example.com / password<br />
-            gm@example.com / password<br />
-            receptionist@example.com / password
-          </p>
-        </div>
       </div>
     </div>
   );
