@@ -142,16 +142,18 @@ export const CEODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <LineChart data={revenueData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Line type="monotone" dataKey="revenue" stroke="#22c55e" name="revenue" />
-                    <Line type="monotone" dataKey="projection" stroke="#4ade80" strokeDasharray="5 5" name="projection" />
-                  </LineChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <LineChart data={revenueData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Line type="monotone" dataKey="revenue" stroke="#22c55e" name="revenue" />
+                      <Line type="monotone" dataKey="projection" stroke="#4ade80" strokeDasharray="5 5" name="projection" />
+                    </LineChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>
@@ -200,15 +202,17 @@ export const CEODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={departmentData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={departmentData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>

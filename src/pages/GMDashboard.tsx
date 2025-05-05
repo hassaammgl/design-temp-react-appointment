@@ -116,16 +116,18 @@ export const GMDashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={meetingData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="internal" fill="#22c55e" name="internal" />
-                    <Bar dataKey="external" fill="#4ade80" name="external" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={meetingData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="internal" fill="#22c55e" name="internal" />
+                      <Bar dataKey="external" fill="#4ade80" name="external" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>
@@ -140,15 +142,17 @@ export const GMDashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={departmentData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={departmentData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>

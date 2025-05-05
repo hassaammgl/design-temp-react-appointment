@@ -142,16 +142,18 @@ export const CTODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={projectData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="completed" fill="#22c55e" name="completed" />
-                    <Bar dataKey="ongoing" fill="#4ade80" name="ongoing" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={projectData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="completed" fill="#22c55e" name="completed" />
+                      <Bar dataKey="ongoing" fill="#4ade80" name="ongoing" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>
@@ -200,15 +202,17 @@ export const CTODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={meetingData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={meetingData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>

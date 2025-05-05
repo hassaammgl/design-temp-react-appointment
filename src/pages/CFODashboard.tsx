@@ -156,17 +156,19 @@ export const CFODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <LineChart data={financeData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Line type="monotone" dataKey="revenue" stroke="#22c55e" name="revenue" />
-                    <Line type="monotone" dataKey="expenses" stroke="#f97316" name="expenses" />
-                    <Line type="monotone" dataKey="profit" stroke="#4ade80" name="profit" />
-                  </LineChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <LineChart data={financeData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Line type="monotone" dataKey="revenue" stroke="#22c55e" name="revenue" />
+                      <Line type="monotone" dataKey="expenses" stroke="#f97316" name="expenses" />
+                      <Line type="monotone" dataKey="profit" stroke="#4ade80" name="profit" />
+                    </LineChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>
@@ -181,16 +183,18 @@ export const CFODashboard = () => {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <BarChart data={budgetData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Bar dataKey="budget" fill="#4ade80" name="budget" />
-                    <Bar dataKey="actual" fill="#16a34a" name="actual" />
-                  </BarChart>
-                  <ChartLegend>
-                    <ChartLegendContent />
-                  </ChartLegend>
+                  <div>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <BarChart data={budgetData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Bar dataKey="budget" fill="#4ade80" name="budget" />
+                      <Bar dataKey="actual" fill="#16a34a" name="actual" />
+                    </BarChart>
+                    <ChartLegend>
+                      <ChartLegendContent />
+                    </ChartLegend>
+                  </div>
                 </ChartContainer>
               </CardContent>
             </Card>
