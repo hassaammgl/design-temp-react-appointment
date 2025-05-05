@@ -15,7 +15,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis } from "recharts";
+import { MeetingRequestForm } from "@/components/forms/MeetingRequestForm";
+import { useMeetings } from "@/contexts/MeetingContext";
+import { MeetingCard } from "@/components/shared/MeetingCard";
+import { Button } from "@/components/ui/button";
 
 const meetingData = [
   { name: "Mon", meetings: 8 },
@@ -33,6 +37,9 @@ const chartConfig = {
 };
 
 export const ReceptionistDashboard = () => {
+  const { getAllMeetings, assignMeeting } = useMeetings();
+  const allMeetings = getAllMeetings();
+  
   return (
     <AppLayout allowedRoles={["receptionist"]}>
       <div className="space-y-6">
@@ -48,6 +55,7 @@ export const ReceptionistDashboard = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="visitors">Today's Visitors</TabsTrigger>
             <TabsTrigger value="schedule">Meeting Schedule</TabsTrigger>
+            <TabsTrigger value="requests">Meeting Requests</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -207,6 +215,32 @@ export const ReceptionistDashboard = () => {
                 </ul>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="requests" className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <MeetingRequestForm />
+            </div>
+            
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Meeting Requests</CardTitle>
+                  <CardDescription>View and manage recent meeting requests</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {allMeetings.length === 0 ? (
+                      <p className="text-center text-muted-foreground py-8">No meeting requests yet</p>
+                    ) : (
+                      allMeetings.slice(0, 5).map((meeting) => (
+                        <MeetingCard key={meeting.id} meeting={meeting} />
+                      ))
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

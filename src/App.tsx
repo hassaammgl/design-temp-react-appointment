@@ -14,6 +14,7 @@ import { CEODashboard } from "./pages/CEODashboard";
 import { CFODashboard } from "./pages/CFODashboard";
 import { GMDashboard } from "./pages/GMDashboard";
 import { ReceptionistDashboard } from "./pages/ReceptionistDashboard";
+import { EmployeeDashboard } from "./pages/EmployeeDashboard";
 import { ProfilePage } from "./pages/ProfilePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
@@ -36,6 +37,7 @@ const App = () => {
                   <Route path="/cfo-dashboard" element={<CFODashboard />} />
                   <Route path="/gm-dashboard" element={<GMDashboard />} />
                   <Route path="/receptionist-dashboard" element={<ReceptionistDashboard />} />
+                  <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
