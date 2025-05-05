@@ -25,12 +25,16 @@ export const AppLayout = ({ children, allowedRoles = [] }: AppLayoutProps) => {
   if (user && allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
     // Redirect to appropriate dashboard if user doesn't have permission
     switch (user.role) {
-      case "visitor":
-        return <Navigate to="/visitor-dashboard" />;
+      case "cto":
+        return <Navigate to="/cto-dashboard" />;
+      case "ceo":
+        return <Navigate to="/ceo-dashboard" />;
+      case "cfo":
+        return <Navigate to="/cfo-dashboard" />;
+      case "gm":
+        return <Navigate to="/gm-dashboard" />;
       case "receptionist":
         return <Navigate to="/receptionist-dashboard" />;
-      case "employee":
-        return <Navigate to="/employee-dashboard" />;
       default:
         return <Navigate to="/login" />;
     }

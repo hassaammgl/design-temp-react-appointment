@@ -32,7 +32,7 @@ export const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   // Determine dashboard link based on user role
   const dashboardLink = user?.role
     ? `/${user.role}-dashboard`
-    : "/visitor-dashboard";
+    : "/login";
 
   return (
     <aside

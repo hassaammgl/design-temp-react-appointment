@@ -1,158 +1,212 @@
 
-import { useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { useMeetings } from "@/contexts/MeetingContext";
-import { MeetingCard } from "@/components/shared/MeetingCard";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
-import { Meeting, MeetingStatus } from "@/contexts/MeetingContext";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+
+const meetingData = [
+  { name: "Mon", meetings: 8 },
+  { name: "Tue", meetings: 12 },
+  { name: "Wed", meetings: 15 },
+  { name: "Thu", meetings: 10 },
+  { name: "Fri", meetings: 7 },
+];
+
+const chartConfig = {
+  meetings: {
+    label: "Meetings",
+    color: "#16a34a",
+  },
+};
 
 export const ReceptionistDashboard = () => {
-  const { getAllMeetings, assignMeeting, updateMeetingStatus } = useMeetings();
-  const [statusFilter, setStatusFilter] = useState<MeetingStatus | "all">("all");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-
-  const allMeetings = getAllMeetings();
-  
-  // Mock employees for demonstration
-  const employees = [
-    { id: "3", name: "Alex Employee" },
-    { id: "4", name: "Sam Smith" },
-    { id: "5", name: "Taylor Johnson" },
-  ];
-
-  // Apply filters
-  const filteredMeetings = allMeetings.filter((meeting) => {
-    const matchesStatus = statusFilter === "all" || meeting.status === statusFilter;
-    const matchesSearch = meeting.visitorName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          meeting.visitorEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          meeting.reason.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDate = !selectedDate || meeting.date === selectedDate;
-    
-    return matchesStatus && matchesSearch && matchesDate;
-  });
-
-  const handleAssignEmployee = (meetingId: string, employeeId: string) => {
-    assignMeeting(meetingId, employeeId);
-  };
-
-  const handleUpdateStatus = (meetingId: string, status: MeetingStatus) => {
-    updateMeetingStatus(meetingId, status);
-  };
-
   return (
     <AppLayout allowedRoles={["receptionist"]}>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Receptionist Dashboard</h1>
           <p className="text-muted-foreground">
-            Manage incoming meeting requests
+            Manage visitors and meeting schedules
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <Label htmlFor="status">Status</Label>
-            <Select 
-              onValueChange={(value) => setStatusFilter(value as MeetingStatus | "all")}
-              defaultValue="all"
-            >
-              <SelectTrigger id="status">
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <Label htmlFor="date">Date</Label>
-            <Input
-              id="date"
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-          </div>
-          
-          <div className="sm:col-span-2">
-            <Label htmlFor="search">Search</Label>
-            <Input
-              id="search"
-              placeholder="Search by name, email, or reason..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* Meetings Grid */}
-        {filteredMeetings.length === 0 ? (
-          <div className="text-center p-12">
-            <p className="text-muted-foreground">No meetings match your filters</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filteredMeetings.map((meeting) => (
-              <MeetingCard key={meeting.id} meeting={meeting}>
-                <div className="space-y-3">
-                  <div>
-                    <Label htmlFor={`assign-${meeting.id}`}>Assign to</Label>
-                    <Select 
-                      onValueChange={(value) => handleAssignEmployee(meeting.id, value)}
-                      defaultValue={meeting.assignedTo}
-                    >
-                      <SelectTrigger id={`assign-${meeting.id}`}>
-                        <SelectValue placeholder="Select employee" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {employees.map((employee) => (
-                          <SelectItem key={employee.id} value={employee.id}>
-                            {employee.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      variant={meeting.status === "approved" ? "default" : "outline"}
-                      className={meeting.status === "approved" ? "bg-green-dark" : ""}
-                      disabled={!meeting.assignedTo}
-                      onClick={() => handleUpdateStatus(meeting.id, "approved")}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant={meeting.status === "rejected" ? "destructive" : "outline"}
-                      disabled={!meeting.assignedTo}
-                      onClick={() => handleUpdateStatus(meeting.id, "rejected")}
-                    >
-                      Reject
-                    </Button>
-                  </div>
-                </div>
-              </MeetingCard>
-            ))}
-          </div>
-        )}
+        <Tabs defaultValue="overview">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="visitors">Today's Visitors</TabsTrigger>
+            <TabsTrigger value="schedule">Meeting Schedule</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Today's Meetings
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">12</div>
+                  <p className="text-xs text-muted-foreground">
+                    3 pending check-ins
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Expected Visitors
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">18</div>
+                  <p className="text-xs text-muted-foreground">
+                    7 already checked in
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Meeting Rooms
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">5/8</div>
+                  <p className="text-xs text-muted-foreground">
+                    Currently occupied
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>Weekly Meeting Distribution</CardTitle>
+                <CardDescription>
+                  Daily meetings scheduled this week
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfig} className="aspect-[4/3] w-full">
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <BarChart data={meetingData}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Bar dataKey="meetings" fill="#16a34a" name="meetings" />
+                  </BarChart>
+                  <ChartLegend>
+                    <ChartLegendContent />
+                  </ChartLegend>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="visitors" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Today's Visitors</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Michael Johnson</p>
+                      <p className="text-sm text-muted-foreground">Meeting with CTO, 10:00 AM</p>
+                    </div>
+                    <span className="bg-green-500/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">Checked In</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Sarah Williams</p>
+                      <p className="text-sm text-muted-foreground">Meeting with CEO, 11:30 AM</p>
+                    </div>
+                    <span className="bg-green-500/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">Checked In</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">David Lee</p>
+                      <p className="text-sm text-muted-foreground">Meeting with CFO, 1:00 PM</p>
+                    </div>
+                    <span className="bg-amber-500/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-full text-xs">Expected</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Emma Garcia</p>
+                      <p className="text-sm text-muted-foreground">Meeting with GM, 2:30 PM</p>
+                    </div>
+                    <span className="bg-amber-500/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-full text-xs">Expected</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Robert Chen</p>
+                      <p className="text-sm text-muted-foreground">Meeting with CTO, 3:45 PM</p>
+                    </div>
+                    <span className="bg-amber-500/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-full text-xs">Expected</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="schedule" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Meeting Schedule</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Tech Team Standup</p>
+                      <p className="text-sm text-muted-foreground">Conference Room A, 9:00 AM</p>
+                    </div>
+                    <span className="bg-blue-500/20 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full text-xs">In Progress</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Investor Meeting</p>
+                      <p className="text-sm text-muted-foreground">Boardroom, 10:00 AM</p>
+                    </div>
+                    <span className="bg-blue-500/20 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full text-xs">In Progress</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Marketing Strategy</p>
+                      <p className="text-sm text-muted-foreground">Meeting Room B, 11:00 AM</p>
+                    </div>
+                    <span className="bg-green-500/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">Upcoming</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Budget Review</p>
+                      <p className="text-sm text-muted-foreground">Conference Room C, 1:00 PM</p>
+                    </div>
+                    <span className="bg-green-500/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">Upcoming</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Product Demo</p>
+                      <p className="text-sm text-muted-foreground">Demo Room, 3:00 PM</p>
+                    </div>
+                    <span className="bg-green-500/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">Upcoming</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </AppLayout>
   );

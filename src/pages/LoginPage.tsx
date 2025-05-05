@@ -31,12 +31,16 @@ export const LoginPage = () => {
   // Redirect if already logged in
   if (isAuthenticated && user) {
     switch (user.role) {
-      case "visitor":
-        return <Navigate to="/visitor-dashboard" />;
+      case "cto":
+        return <Navigate to="/cto-dashboard" />;
+      case "ceo":
+        return <Navigate to="/ceo-dashboard" />;
+      case "cfo":
+        return <Navigate to="/cfo-dashboard" />;
+      case "gm":
+        return <Navigate to="/gm-dashboard" />;
       case "receptionist":
         return <Navigate to="/receptionist-dashboard" />;
-      case "employee":
-        return <Navigate to="/employee-dashboard" />;
       default:
         return null;
     }
@@ -111,9 +115,11 @@ export const LoginPage = () => {
             Demo accounts:
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            visitor@example.com / password<br />
-            receptionist@example.com / password<br />
-            employee@example.com / password
+            cto@example.com / password<br />
+            ceo@example.com / password<br />
+            cfo@example.com / password<br />
+            gm@example.com / password<br />
+            receptionist@example.com / password
           </p>
         </div>
       </div>

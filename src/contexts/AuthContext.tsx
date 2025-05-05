@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-export type UserRole = "visitor" | "receptionist" | "employee";
+export type UserRole = "cto" | "ceo" | "cfo" | "gm" | "receptionist";
 
 interface User {
   id: string;
@@ -26,26 +26,42 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const mockUsers = [
   {
     id: "1",
-    email: "visitor@example.com",
+    email: "cto@example.com",
     password: "password",
-    name: "John Visitor",
-    role: "visitor" as UserRole,
+    name: "John CTO",
+    role: "cto" as UserRole,
     avatar: "/placeholder.svg",
   },
   {
     id: "2",
-    email: "receptionist@example.com",
+    email: "ceo@example.com",
     password: "password",
-    name: "Jane Receptionist",
-    role: "receptionist" as UserRole,
+    name: "Jane CEO",
+    role: "ceo" as UserRole,
     avatar: "/placeholder.svg",
   },
   {
     id: "3",
-    email: "employee@example.com",
+    email: "cfo@example.com",
     password: "password",
-    name: "Alex Employee",
-    role: "employee" as UserRole,
+    name: "Alex CFO",
+    role: "cfo" as UserRole,
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "4",
+    email: "gm@example.com",
+    password: "password",
+    name: "Sam GM",
+    role: "gm" as UserRole,
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "5",
+    email: "receptionist@example.com",
+    password: "password",
+    name: "Emma Receptionist",
+    role: "receptionist" as UserRole,
     avatar: "/placeholder.svg",
   },
 ];
@@ -74,14 +90,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Redirect based on role
       switch (foundUser.role) {
-        case "visitor":
-          navigate("/visitor-dashboard");
+        case "cto":
+          navigate("/cto-dashboard");
+          break;
+        case "ceo":
+          navigate("/ceo-dashboard");
+          break;
+        case "cfo":
+          navigate("/cfo-dashboard");
+          break;
+        case "gm":
+          navigate("/gm-dashboard");
           break;
         case "receptionist":
           navigate("/receptionist-dashboard");
-          break;
-        case "employee":
-          navigate("/employee-dashboard");
           break;
         default:
           navigate("/");

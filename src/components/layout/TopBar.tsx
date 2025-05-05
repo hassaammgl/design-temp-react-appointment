@@ -31,9 +31,11 @@ export const TopBar = ({ toggleSidebar }: TopBarProps) => {
           <Menu size={20} />
         </Button>
         <h2 className="text-lg font-semibold hidden md:block">
-          {user?.role === "visitor" && "Visitor Dashboard"}
+          {user?.role === "cto" && "CTO Dashboard"}
+          {user?.role === "ceo" && "CEO Dashboard"}
+          {user?.role === "cfo" && "CFO Dashboard"}
+          {user?.role === "gm" && "GM Dashboard"}
           {user?.role === "receptionist" && "Receptionist Dashboard"}
-          {user?.role === "employee" && "Employee Dashboard"}
         </h2>
       </div>
 
